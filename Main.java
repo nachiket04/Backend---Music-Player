@@ -42,6 +42,9 @@ public class Main {
                 case 5:
                     playPrev(playList);
                     break;
+                case 6:
+                    repeat(playList);
+                    break;
             }
         }
 
@@ -92,6 +95,12 @@ public class Main {
             return false;
         }
         System.out.println("Now playing " + itr.next());
+        return true;
+    }
+
+    public static boolean repeat(LinkedList <Song> playList){
+        itr.previous();
+        System.out.println("Playing "+ itr.next() + " Again");
         return true;
     }
 }
