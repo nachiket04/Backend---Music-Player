@@ -1,22 +1,28 @@
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Scanner;
+import java.util.random.RandomGenerator;
 
 public class Main {
 
     static LinkedList <Song> playList;
     static ListIterator <Song> itr;
+    static boolean forward;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Song s1 = new Song("Kesariya", 4.20);
         Album ArjitSingh = new Album("Top Arijit", "Arijit Singh");
         ArjitSingh.addSong("Kesariya", 4.20);
         ArjitSingh.findSong("Kesariya");
+        ArjitSingh.addSong("Kalank", 3.30);
+        ArjitSingh.addSong("Tera Fitoor", 4.20);
         Album NehaKakkar = new Album("Best of Neha Kakkar", "Neha Kakkar");
         NehaKakkar.addSong("Kata laga", 3.15);
         playList = new LinkedList<>();
         itr = playList.listIterator();
         ArjitSingh.addToPlaylist("Kesariya", playList);
+        ArjitSingh.addToPlaylist("Tera Fitoor", playList);
+        ArjitSingh.addToPlayList(2, playList);
         NehaKakkar.addToPlaylist("kata Laga", playList);
 //        printPlayList(playList);
         showMenu();
@@ -34,6 +40,7 @@ public class Main {
                     itr = playList.listIterator();
                     break;
                 case 3:
+                    itr = playList.listIterator();
                     play(playList);
                     break;
                 case 4:
@@ -44,6 +51,9 @@ public class Main {
                     break;
                 case 6:
                     repeat(playList);
+                    break;
+                case 7:
+                    delete(playList);
                     break;
             }
         }
@@ -75,32 +85,53 @@ public class Main {
             return false;
         }
         System.out.println("Now playing " + itr.next());
+        forward = true;
         return true;
     }
 
     public static boolean playNext(LinkedList <Song> playList){
-
+        if(!forward){
+            if(itr.hasNext())
+            itr.next();
+        }
         if(!itr.hasNext()){
             System.out.println("End of the PlayList.." + "\n" + "Nothing to play.. :(");
             return false;
         }
         System.out.println("Now playing " + itr.next());
+        forward = true;
         return true;
     }
 
     public static boolean playPrev(LinkedList <Song> playList){
-
-        if(!itr.hasNext()){
+        if(forward){
+            if(itr.hasPrevious())
+            itr.previous();
+        }
+        if(!itr.hasPrevious()){
             System.out.println("End of the PlayList.." + "\n" + "Nothing to play.. :(");
             return false;
         }
-        System.out.println("Now playing " + itr.next());
+        System.out.println("Now playing " + itr.previous());
+        forward = false;
         return true;
     }
 
     public static boolean repeat(LinkedList <Song> playList){
-        itr.previous();
-        System.out.println("Playing "+ itr.next() + " Again");
+        if(forward){
+            itr.previous();
+            System.out.println("playing " + itr.next() + " Again");
+        }
+        else {
+            itr.next();
+            System.out.println("playing " + itr.previous() + " Again");
+        }
+        return true;
+    }
+
+    public static boolean delete(LinkedList<Song> playList){
+        itr.remove();
+        System.out.println("Song has been removed");
         return true;
     }
 }
